@@ -1,7 +1,7 @@
 {
   "name": "dsh-judge-loop",
   "version": "2.0.0",
-  "description": "交付前的满分闸门（双团队版）：教授团队定评分细则（不看稿），导师团队按细则做到满分并可向教授取经；本地脚本 gate.cjs 机械执行证据校验，不满分不进 final/。A two-team grading gate for DeepSeek Harness: a professor writes the rubric blind, a tutor meets it.",
+  "description": "为真实项目产出可交付成品的双团队流程：教授只读题目与素材、定评分标准（不看稿，决定上限），导师按标准做到 95 分以上，成品直接交付。合格线 95 而非 100——95 是「发出去不会被问倒」。A two-team delivery loop for DeepSeek Harness: a professor writes the rubric blind, a tutor meets it, 95 is the bar.",
   "type": "module",
   "main": "index.mjs",
   "exports": {
