@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseSkillFrontmatter, SKILL_NAMES, bundledSkillsDir, gateScriptPath } from '../index.mjs';
+import { parseSkillFrontmatter, SKILL_NAMES, bundledSkillsDir } from '../index.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -30,11 +30,20 @@ test('description 不超过目录扫描上限（1024 字符）', () => {
   }
 });
 
-test('gate.cjs 存在且能被 node --check 解析', async () => {
-  assert.ok(existsSync(gateScriptPath()));
+test('legacy 里的 gate.cjs 只作存档，不参与流程', async () => {
+  const legacy = join(root, 'legacy', 'gate.cjs');
+  assert.ok(existsSync(legacy), 'legacy/gate.cjs 应作为存档保留');
   const { spawnSync } = await import('node:child_process');
-  const r = spawnSync(process.execPath, ['--check', gateScriptPath()], { encoding: 'utf8' });
+  const r = spawnSync(process.execPath, ['--check', legacy], { encoding: 'utf8' });
   assert.equal(r.status, 0, r.stderr);
+});
+
+test('skills 目录里不再引用 gate（流程已改为 95 分人判）', () => {
+  for (const n of SKILL_NAMES) {
+    const txt = readFileSync(join(bundledSkillsDir(), n, 'SKILL.md'), 'utf8');
+    assert.ok(!/\bgate\.(cjs|cmd|rubric|check|promote|review|score|status)\b/.test(txt),
+      `${n} 的 SKILL.md 仍提到 gate 命令`);
+  }
 });
 
 test('package.json 与 cordis.patch.yml 指向同一个包名', () => {
