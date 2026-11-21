@@ -1,12 +1,13 @@
 /**
- * dsh-judge-loop —— 交付前的满分闸门（双团队版）
+ * dsh-judge-loop —— 教授定标准、导师做到位的双团队流程
  *
  * 注册三个技能：
- *   judge-loop  主流程：两个团队怎么协作、gate 命令、退出码
+ *   judge-loop  主流程：两个团队怎么协作、95 分怎么算、四条红线
  *   professor   教授团队：只读题目与素材，产出 rubric.json（决定上限）
- *   tutor       导师团队：按 rubric 一步做到满分，可向教授取经
+ *   tutor       导师团队：按 rubric 做到 95 分以上，可向教授问判据初衷
  *
- * 附赠一个命令行闸门 scripts/gate.cjs（零依赖），由 tutor 与 CI 调用。
+ * 不注册任何命令，也不写 final/ 目录：成品直接交付。
+ * v1 的机械闸门 gate.cjs 留在 legacy/ 里存档，不再参与流程。
  *
  * @module dsh-judge-loop
  */
@@ -25,9 +26,13 @@ export function bundledSkillsDir() {
   return fileURLToPath(new URL('./skills/', import.meta.url));
 }
 
-/** 闸门脚本绝对路径（给 tutor / CI 用）。 */
-export function gateScriptPath() {
-  return fileURLToPath(new URL('./scripts/gate.cjs', import.meta.url));
+/**
+ * v1 机械闸门脚本的存档路径。
+ * 它已不参与流程（95 分制不需要闸门），只留着给想看当初怎么拦的人。
+ * 想找回 gate 流程：`legacy/README.md`。
+ */
+export function legacyGateScriptPath() {
+  return fileURLToPath(new URL('./legacy/gate.cjs', import.meta.url));
 }
 
 function unquoteYamlScalar(value) {
