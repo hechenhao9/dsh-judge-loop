@@ -238,18 +238,29 @@ test('未知否决编号 exit 2', () => {
   assert.equal(run(['check', w]).code, 2);
 });
 
-test('轮次超过 5 exit 6', () => {
+test('同一轮里改了 6 版 exit 6（轮次数的是版本，不是 runs/ 下的目录数）', () => {
+  const { w, dir } = mkwork();
+  const bs = { beyond_spec: [{ what: '可以直接用的一句', reason: '判据只要求可复用，没说先发给谁，这句省了他一次改写' }] };
+  for (let v = 1; v <= 6; v++) {
+    writeFileSync(join(dir, `draft-v${v}.md`), DRAFT);
+    writeFileSync(join(dir, `score-v${v}.json`), JSON.stringify(score(fullScores(), bs)));
+  }
+  assert.equal(run(['check', w]).code, 6);
+});
+
+test('多个 runs/ 目录各改两版不算轮次超限', () => {
   const { w } = mkwork();
+  const bs = { beyond_spec: [{ what: '可以直接用的一句', reason: '判据只要求可复用，没说先发给谁，这句省了他一次改写' }] };
   for (let n = 1; n <= 6; n++) {
     const d = join(w, 'runs', String(n));
     mkdirSync(d, { recursive: true });
     writeFileSync(join(d, 'task.md'), 'x');
     writeFileSync(join(d, 'draft-v1.md'), DRAFT);
     writeFileSync(join(d, 'draft-v2.md'), DRAFT);
-    writeFileSync(join(d, 'score-v1.json'), JSON.stringify(score(fullScores(), { beyond_spec: [{ what: '可以直接用的一句', reason: '判据只要求可复用，没说先发给谁，这句省了他一次改写' }] })));
-    writeFileSync(join(d, 'score-v2.json'), JSON.stringify(score(fullScores(), { beyond_spec: [{ what: '可以直接用的一句', reason: '判据只要求可复用，没说先发给谁，这句省了他一次改写' }] })));
+    writeFileSync(join(d, 'score-v1.json'), JSON.stringify(score(fullScores(), bs)));
+    writeFileSync(join(d, 'score-v2.json'), JSON.stringify(score(fullScores(), bs)));
   }
-  assert.equal(run(['check', w]).code, 6);
+  assert.notEqual(run(['check', w]).code, 6, '六个用例各两版，不该被当成六轮');
 });
 
 test('reviewer 写 self 不给满分通过', () => {

@@ -188,7 +188,13 @@ function checkWork(work) {
     form.push('runs/ 下没有轮次');
     return { rubric, rounds: [], last: null, total: null, vetoes: [], errors: { form, block, review } };
   }
-  if (rs.length > MAX_ROUNDS) block.push(`轮次 ${rs.length} 个，超过 ${MAX_ROUNDS}（「不完美不许交」必须有终点）`);
+  // 轮次 = 同一份交付改了多少版，不是 runs/ 下有几个用例目录。
+  // 数目录会让「一个用例改十版」永远过不了闸门，而「十个用例各改一版」被误杀。
+  // 上限优先读 rubric 的 max_rounds（由教授定），没写才用 MAX_ROUNDS。
+  const limit = Number(rubric.max_rounds) > 0 ? Number(rubric.max_rounds) : MAX_ROUNDS;
+  const src = Number(rubric.max_rounds) > 0 ? 'rubric.max_rounds' : 'MAX_ROUNDS 默认值';
+  const maxV = Math.max(0, ...rs.map(N => versions(work, N).length));
+  if (maxV > limit) block.push(`同一轮里改了 ${maxV} 版（runs/ 下最多的那轮），超过上限 ${limit} 版（来源：${src}；「不完美不许交」必须有终点）`);
 
   let last = null;
   for (const N of rs) {

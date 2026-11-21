@@ -48,13 +48,13 @@
     "dsh": ">=0.2.1-rc.3"
   },
   "license": "MIT",
-  "author": "",
+  "author": "hechenhao9",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/<you>/dsh-judge-loop.git"
+    "url": "git+https://github.com/hechenhao9/dsh-judge-loop.git"
   },
   "bugs": {
-    "url": "https://github.com/<you>/dsh-judge-loop/issues"
+    "url": "https://github.com/hechenhao9/dsh-judge-loop/issues"
   },
-  "homepage": "https://github.com/<you>/dsh-judge-loop#readme"
+  "homepage": "https://github.com/hechenhao9/dsh-judge-loop#readme"
 }
