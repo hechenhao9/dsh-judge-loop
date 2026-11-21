@@ -1,0 +1,60 @@
+{
+  "name": "dsh-judge-loop",
+  "version": "2.0.0",
+  "description": "交付前的满分闸门（双团队版）：教授团队定评分细则（不看稿），导师团队按细则做到满分并可向教授取经；本地脚本 gate.cjs 机械执行证据校验，不满分不进 final/。A two-team grading gate for DeepSeek Harness: a professor writes the rubric blind, a tutor meets it.",
+  "type": "module",
+  "main": "index.mjs",
+  "exports": {
+    ".": "./index.mjs",
+    "./skills/*": "./skills/*",
+    "./scripts/*": "./scripts/*",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.mjs",
+    "cordis.patch.yml",
+    "skills",
+    "scripts",
+    "agents",
+    "test",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\"",
+    "demo": "node test/e2e-demo.mjs"
+  },
+  "dsh": {
+    "manifestVersion": 1,
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "dsh-plugin",
+    "skill",
+    "rubric",
+    "grading",
+    "quality-gate",
+    "judge",
+    "agent"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0",
+    "dsh": ">=0.2.1-rc.3"
+  },
+  "license": "MIT",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/<you>/dsh-judge-loop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/<you>/dsh-judge-loop/issues"
+  },
+  "homepage": "https://github.com/<you>/dsh-judge-loop#readme"
+}
