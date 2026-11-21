@@ -40,7 +40,7 @@
           "source": {
             "type": "git",
             "url": "https://github.com/hechenhao9/dsh-judge-loop",
-            "commit": "98a8de86c4137b2f3ac7ce05dce4bdfe1d34b994"
+            "commit": "167295a9dc169aca1374ab11bf05f8c428f119f8"
           },
           "engines": {
             "dsh": ">=0.2.1-rc.3"
